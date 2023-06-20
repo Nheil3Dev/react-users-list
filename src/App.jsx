@@ -2,16 +2,19 @@ import { UsersList } from './components/UsersList'
 
 const USERS = [
 	{
+		id: 0,
 		name: 'Pablo Castellanos',
 		active: true,
 		role: 'teacher'
 	},
 	{
+		id: 1,
 		name: 'Jose Miguel Fernández',
 		active: true,
 		role: 'teacher'
 	},
 	{
+		id: 2,
 		name: 'Claudio López',
 		active: false,
 		role: 'student'
@@ -19,9 +22,5 @@ const USERS = [
 ]
 
 export default function App() {
-	return (
-		<UsersList users={USERS}>
-			<h1>Lista de Usuarios</h1>
-		</UsersList>
-	)
+	return <UsersList initialUsers={USERS} />
 }
