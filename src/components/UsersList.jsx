@@ -1,6 +1,5 @@
 import { useFilters } from '../hooks/useFilters'
 import { useUsers } from '../hooks/useUsers'
-import { UsersContext } from '../lib/context/UsersContext'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
@@ -8,7 +7,7 @@ import { UsersListRows } from './UsersListRows'
 export const UsersList = ({ initialUsers }) => {
 	const { search, onlyActive, sortBy, ...setFiltersFunction } = useFilters()
 
-	const { users, toggleUserActive } = useUsers({ initialUsers })
+	const { users } = useUsers({ initialUsers })
 
 	let usersFiltered = filterActiveUsers(users, onlyActive)
 	usersFiltered = filterUsersByName(usersFiltered, search)
@@ -23,9 +22,8 @@ export const UsersList = ({ initialUsers }) => {
 				sortBy={sortBy}
 				{...setFiltersFunction}
 			/>
-			<UsersContext.Provider value={{ toggleUserActive }}>
-				<UsersListRows users={usersFiltered} />
-			</UsersContext.Provider>
+
+			<UsersListRows users={usersFiltered} />
 		</div>
 	)
 }
