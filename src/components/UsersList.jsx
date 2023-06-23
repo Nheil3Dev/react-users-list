@@ -1,5 +1,10 @@
-import { useFilters } from '../hooks/useFilters'
-import { useUsers } from '../hooks/useUsers'
+import { useFilters } from '../lib/hooks/useFilters'
+import { useUsers } from '../lib/hooks/useUsers'
+import {
+	filterActiveUsers,
+	filterUsersByName,
+	sortUsers
+} from '../lib/users/filterUsers'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
@@ -26,48 +31,4 @@ export const UsersList = ({ initialUsers }) => {
 			<UsersListRows users={usersFiltered} />
 		</div>
 	)
-}
-
-const filterUsersByName = (users, search) => {
-	if (!search) return [...users]
-
-	const lowerCasedSearch = search.toLowerCase()
-
-	return users.filter(user =>
-		user.name.toLowerCase().includes(lowerCasedSearch)
-	)
-}
-
-const filterActiveUsers = (users, active) => {
-	if (!active) return [...users]
-
-	return users.filter(user => user.active)
-}
-
-const sortUsers = (users, sortBy) => {
-	const sortedUsers = [...users]
-	// Lógica sacada de tablas de la verdad para cada caso
-	switch (sortBy) {
-		case 1:
-			return sortedUsers.sort((a, b) => {
-				if (a.name > b.name) return 1
-				if (a.name < b.name) return -1
-				return 0
-			})
-		case 2:
-			return sortedUsers.sort((a, b) => {
-				if (a.role === b.role) return 0
-				if (a.role === 'teacher') return -1
-				if (a.role === 'student' && b.role === 'other') return -1
-				return 1
-			})
-		case 3:
-			return sortedUsers.sort((a, b) => {
-				if (a.status && !b.status) return -1
-				if (!a.status && b.status) return 1
-				return 0
-			})
-		default:
-			return sortedUsers
-	}
 }
