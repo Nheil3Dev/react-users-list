@@ -15,7 +15,7 @@ export const UsersList = ({ initialUsers }) => {
 
 	return (
 		<div className={style.list}>
-			<h1>Lista de Usuarios</h1>
+			<h1 className={style.title}>Lista de Usuarios</h1>
 			<UsersListFilters
 				search={search}
 				onlyActive={onlyActive}
@@ -34,7 +34,7 @@ const filterUsersByName = (users, search) => {
 	const lowerCasedSearch = search.toLowerCase()
 
 	return users.filter(user =>
-		user.name.toLowerCase().startsWith(lowerCasedSearch)
+		user.name.toLowerCase().includes(lowerCasedSearch)
 	)
 }
 
@@ -46,10 +46,28 @@ const filterActiveUsers = (users, active) => {
 
 const sortUsers = (users, sortBy) => {
 	const sortedUsers = [...users]
-	if (sortBy === 0) return sortedUsers
-	return sortedUsers.sort((a, b) => {
-		if (a.name > b.name) return 1
-		if (a.name < b.name) return -1
-		return 0
-	})
+	// Lógica sacada de tablas de la verdad para cada caso
+	switch (sortBy) {
+		case 1:
+			return sortedUsers.sort((a, b) => {
+				if (a.name > b.name) return 1
+				if (a.name < b.name) return -1
+				return 0
+			})
+		case 2:
+			return sortedUsers.sort((a, b) => {
+				if (a.role === b.role) return 0
+				if (a.role === 'teacher') return -1
+				if (a.role === 'student' && b.role === 'other') return -1
+				return 1
+			})
+		case 3:
+			return sortedUsers.sort((a, b) => {
+				if (a.status && !b.status) return -1
+				if (!a.status && b.status) return 1
+				return 0
+			})
+		default:
+			return sortedUsers
+	}
 }
