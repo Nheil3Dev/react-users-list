@@ -13,6 +13,7 @@ module.exports = {
     'standard',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
     'eslint-config-prettier'
   ],
   parserOptions: {
