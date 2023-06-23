@@ -1,34 +1,35 @@
 import { useFilters } from '../lib/hooks/useFilters'
 import { useUsers } from '../lib/hooks/useUsers'
-import {
-	filterActiveUsers,
-	filterUsersByName,
-	sortUsers
-} from '../lib/users/filterUsers'
+import { UserListPagination } from './UserListPagination'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
 
 export const UsersList = ({ initialUsers }) => {
-	const { search, onlyActive, sortBy, ...setFiltersFunction } = useFilters()
+	const { filters, setPage, setItemsPerPage, ...setFiltersFunction } =
+		useFilters()
 
-	const { users } = useUsers({ initialUsers })
-
-	let usersFiltered = filterActiveUsers(users, onlyActive)
-	usersFiltered = filterUsersByName(usersFiltered, search)
-	usersFiltered = sortUsers(usersFiltered, sortBy)
+	const { users, totalPages } = useUsers({ initialUsers, ...filters })
 
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Lista de Usuarios</h1>
 			<UsersListFilters
-				search={search}
-				onlyActive={onlyActive}
-				sortBy={sortBy}
+				search={filters.search}
+				onlyActive={filters.onlyActive}
+				sortBy={filters.sortBy}
 				{...setFiltersFunction}
 			/>
 
-			<UsersListRows users={usersFiltered} />
+			<UsersListRows users={users} />
+
+			<UserListPagination
+				page={filters.page}
+				itemPerPage={filters.itemsPerPage}
+				setPage={setPage}
+				setItemPerPage={setItemsPerPage}
+				totalPages={totalPages}
+			/>
 		</div>
 	)
 }

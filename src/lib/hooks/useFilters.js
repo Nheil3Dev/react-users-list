@@ -5,13 +5,16 @@ export const useFilters = () => {
 	const [filters, setFilters] = useState({
 		search: '',
 		onlyActive: false,
-		sortBy: SORT_OPTIONS.DEFAULT
+		sortBy: SORT_OPTIONS.DEFAULT,
+		page: 1,
+		itemsPerPage: 2
 	})
 
 	const setSearch = search =>
 		setFilters({
 			...filters,
-			search
+			search,
+			page: 1
 		})
 
 	const setOnlyActive = onlyActive => {
@@ -24,6 +27,7 @@ export const useFilters = () => {
 		setFilters({
 			...filters,
 			sortBy: newSortBy,
+			page: 1,
 			onlyActive
 		})
 	}
@@ -33,6 +37,19 @@ export const useFilters = () => {
 			...filters,
 			sortBy
 		})
+	
+	const setPage = page => 
+		setFilters({
+			...filters,
+			page
+		})
 
-	return { ...filters, setSearch, setOnlyActive, setSortBy }
+	const setItemsPerPage = itemsPerPage => {
+		setFilters({
+			...filters,
+			itemsPerPage
+		})
+	}
+
+	return { filters, setSearch, setOnlyActive, setSortBy, setPage, setItemsPerPage }
 }
