@@ -1,0 +1,66 @@
+.wrapper {
+	position: relative;
+	display: block;
+}
+
+.input {
+	width: 100%;
+	height: 2.5rem;
+	padding: 0.5rem 1rem;
+	padding-right: 3.5rem;
+	margin: 0.25rem 0;
+
+	border-radius: var(--radius-sm);
+	border: none;
+	outline: none;
+	box-shadow: var(--shadow-sm);
+}
+
+.input:focus {
+	box-shadow: var(--shadow-md);
+}
+
+.input::placeholder {
+	color: var(--color-lightgray);
+}
+
+.borderError {
+	outline: 1px solid var(--color-red);
+}
+
+.label,
+.error {
+	margin-left: 0.5rem;
+}
+.label {
+	font-size: var(--text-sm);
+	font-weight: bold;
+	color: var(--color-black);
+}
+
+.error {
+	font-size: var(--text-sm);
+	color: var(--color-red);
+}
+
+.loadingIcon,
+.successIcon,
+.errorIcon {
+	position: absolute;
+	top: 1.9rem;
+	right: 1rem;
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
+.loadingIcon {
+	color: var(--color-lightgray);
+}
+
+.successIcon {
+	color: var(--color-green);
+}
+
+.errorIcon {
+	color: var(--color-red);
+}
