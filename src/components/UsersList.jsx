@@ -5,11 +5,11 @@ import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
 
-export const UsersList = ({ initialUsers }) => {
+export const UsersList = () => {
 	const { filters, setPage, setItemsPerPage, ...setFiltersFunction } =
 		useFilters()
 
-	const { users, totalPages } = useUsers({ initialUsers, ...filters })
+	const { users, totalPages, error, loading } = useUsers(filters)
 
 	return (
 		<div className={style.list}>
@@ -21,15 +21,17 @@ export const UsersList = ({ initialUsers }) => {
 				{...setFiltersFunction}
 			/>
 
-			<UsersListRows users={users} />
+			<UsersListRows users={users} error={error} loading={loading} />
 
-			<UserListPagination
-				page={filters.page}
-				itemPerPage={filters.itemsPerPage}
-				setPage={setPage}
-				setItemPerPage={setItemsPerPage}
-				totalPages={totalPages}
-			/>
+			{!error && (
+				<UserListPagination
+					page={filters.page}
+					itemPerPage={filters.itemsPerPage}
+					setPage={setPage}
+					setItemPerPage={setItemsPerPage}
+					totalPages={totalPages}
+				/>
+			)}
 		</div>
 	)
 }
