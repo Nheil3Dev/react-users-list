@@ -14,6 +14,8 @@ import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
 import { Button } from './buttons/Button'
 import { UserCreateForm } from './user-forms/UserCreateForm'
+import { UserDeleteForm } from './user-forms/UserDeleteForm'
+import { UserEditForm } from './user-forms/UserEditForm'
 import { UserFormLayout } from './user-forms/UserFormLayout'
 
 export const UsersList = () => {
@@ -27,7 +29,14 @@ export const UsersList = () => {
 
 	const { users, usersError, usersLoading, reloadUsers } = useUsers()
 
-	const { currentForm, setCreateForm, setFiltersForm } = useForm()
+	const {
+		currentForm,
+		currentUser,
+		setCreateForm,
+		setFiltersForm,
+		setDeleteForm,
+		setEditForm
+	} = useForm()
 
 	const { paginatedUsers, totalPages } = getUsersToDisplay(
 		users,
@@ -52,7 +61,19 @@ export const UsersList = () => {
 				/>
 			) : (
 				<UserFormLayout onClose={setFiltersForm}>
-					<UserCreateForm onSuccess={onSuccess} />
+					{currentForm === USER_FORMS.CREATE && (
+						<UserCreateForm onSuccess={onSuccess} />
+					)}
+					{currentForm === USER_FORMS.EDIT && (
+						<UserEditForm onSuccess={onSuccess} user={currentUser} />
+					)}
+					{currentForm === USER_FORMS.DELETE && (
+						<UserDeleteForm
+							onSuccess={onSuccess}
+							user={currentUser}
+							onCancel={setFiltersForm}
+						/>
+					)}
 				</UserFormLayout>
 			)}
 
@@ -60,6 +81,8 @@ export const UsersList = () => {
 				users={paginatedUsers}
 				error={usersError}
 				loading={usersLoading}
+				setEditForm={setEditForm}
+				setDeleteForm={setDeleteForm}
 			/>
 
 			{!usersError && (

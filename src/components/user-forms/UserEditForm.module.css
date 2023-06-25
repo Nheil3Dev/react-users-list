@@ -1,0 +1,19 @@
+.input {
+	width: 40%;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.row ~ .row {
+	margin-top: 1.5rem;
+}
+
+.active {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}

@@ -1,13 +1,21 @@
-import { useState } from "react"
+import { useState } from 'react'
 import { USER_FORMS } from '../../constants/userForms'
 
 export const useForm = () => {
-	const [currentForm, setCurrentForm] = useState(USER_FORMS.FILTERS)
+	const [currentForm, setCurrentForm] = useState({ form: USER_FORMS.FILTERS })
 
-    const setFiltersForm = () => setCurrentForm(USER_FORMS.FILTERS)
-    const setCreateForm = () => setCurrentForm(USER_FORMS.CREATE)
-    const setEditForm = () => setCurrentForm(USER_FORMS.EDIT)
-    const setDeleteForm = () => setCurrentForm(USER_FORMS.DELETE)
+	const setFiltersForm = () => setCurrentForm({ form: USER_FORMS.FILTERS })
+	const setCreateForm = () => setCurrentForm({ form: USER_FORMS.CREATE })
+	const setEditForm = user => setCurrentForm({ form: USER_FORMS.EDIT, user })
+	const setDeleteForm = user =>
+		setCurrentForm({ form: USER_FORMS.DELETE, user })
 
-    return { currentForm, setCreateForm, setDeleteForm, setEditForm, setFiltersForm }
+	return {
+		currentForm: currentForm.form,
+		currentUser: currentForm.user,
+		setCreateForm,
+		setDeleteForm,
+		setEditForm,
+		setFiltersForm
+	}
 }
