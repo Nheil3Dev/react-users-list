@@ -1,14 +1,16 @@
-import { useState } from "react"
-import { SORT_OPTIONS } from "../../constants/sortOptions"
+import { useState } from 'react'
+import { SORT_OPTIONS } from '../../constants/sortOptions'
+
+const INITIAL_STATE = {
+	search: '',
+	onlyActive: false,
+	sortBy: SORT_OPTIONS.DEFAULT,
+	page: 1,
+	itemsPerPage: 6
+}
 
 export const useFilters = () => {
-	const [filters, setFilters] = useState({
-		search: '',
-		onlyActive: false,
-		sortBy: SORT_OPTIONS.DEFAULT,
-		page: 1,
-		itemsPerPage: 6
-	})
+	const [filters, setFilters] = useState(INITIAL_STATE)
 
 	const setSearch = search =>
 		setFilters({
@@ -20,9 +22,10 @@ export const useFilters = () => {
 	const setOnlyActive = onlyActive => {
 		// Cuando marcamos la opción 'sólo activos' y tenemos el filtro 'Por activación'
 		// reseteamos el filtro a 'Por defecto'
-		const newSortBy = onlyActive && filters.sortBy === SORT_OPTIONS.ACTIVE
-			? SORT_OPTIONS.DEFAULT
-			: filters.sortBy
+		const newSortBy =
+			onlyActive && filters.sortBy === SORT_OPTIONS.ACTIVE
+				? SORT_OPTIONS.DEFAULT
+				: filters.sortBy
 
 		setFilters({
 			...filters,
@@ -38,8 +41,8 @@ export const useFilters = () => {
 			page: 1,
 			sortBy
 		})
-	
-	const setPage = page => 
+
+	const setPage = page =>
 		setFilters({
 			...filters,
 			page
@@ -49,9 +52,35 @@ export const useFilters = () => {
 		setFilters({
 			...filters,
 			page: 1,
-			itemsPerPage, 
+			itemsPerPage
 		})
 	}
 
-	return { filters, setSearch, setOnlyActive, setSortBy, setPage, setItemsPerPage }
+	const resetFilters = () => {
+		setFilters(INITIAL_STATE)
+	}
+
+	const { search, onlyActive, sortBy, page, itemsPerPage } = filters
+
+	return {
+		filters: {
+			search,
+			onlyActive,
+			sortBy
+		},
+		pagination: {
+			page,
+			itemsPerPage
+		},
+		filterSetters: {
+			setSearch,
+			setOnlyActive,
+			setSortBy
+		},
+		paginationSetters: {
+			setPage,
+			setItemsPerPage
+		},
+		resetFilters
+	}
 }

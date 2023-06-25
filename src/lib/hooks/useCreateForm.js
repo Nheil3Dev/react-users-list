@@ -1,85 +1,86 @@
-import { useEffect, useState } from "react"
-import { validateUsername, validatename } from "../users/userValidations"
+import { useEffect, useState } from 'react'
+import { findUsersByUsername } from '../api/usersApi'
+import { validateUsername, validatename } from '../users/userValidations'
 
 export const useCreateForm = () => {
-    const [formValues, setformValues] = useState({
+	const [formValues, setformValues] = useState({
 		name: {
-        value: '',
-        error: undefined
-      },
+			value: '',
+			error: undefined
+		},
 		username: {
-        value: '',
-        loading: false,
-        error: undefined
-      }
+			value: '',
+			loading: false,
+			error: undefined
+		}
 	})
 
-  
 	const setName = newName => {
-    const error = validatename(newName)
-    
+		const error = validatename(newName)
+
 		setformValues({
-      ...formValues,
-			name: { value: newName, error}
+			...formValues,
+			name: { value: newName, error }
 		})
-  }
-  
+	}
+
 	const setUsername = newUsername => {
-    const error = validateUsername(newUsername)
+		const error = validateUsername(newUsername)
 		setformValues({
-      ...formValues,
+			...formValues,
 			username: { value: newUsername, loading: !error, error }
 		})
-  }
-  
-  const setUsernameError = error => {
-    setformValues(prevFormValues => ({
-      ...prevFormValues,
-      username: {
-        value: prevFormValues.username.value,
-        error,
-        loading: false
-      }
-    }))
-  }
+	}
 
-  useEffect(() => {
-    if (!formValues.username.loading) return
+	const setUsernameError = error => {
+		setformValues(prevFormValues => ({
+			...prevFormValues,
+			username: {
+				value: prevFormValues.username.value,
+				error,
+				loading: false
+			}
+		}))
+	}
 
-    const controller = new AbortController()
+	useEffect(() => {
+		if (!formValues.username.loading) return
 
-    const timeoutId = setTimeout(() => {
-      validateUsernameIsAvailable(formValues.username.value, setUsernameError, controller.signal)
-    }, 500)
-    
-    return () => {
-      controller.abort()
-      clearTimeout(timeoutId)
-    }
+		const controller = new AbortController()
 
-  }, [formValues.username.loading, formValues.username.value])
-  
-  return { ...formValues, setName, setUsername, setUsernameError }
+		const timeoutId = setTimeout(() => {
+			validateUsernameIsAvailable(
+				formValues.username.value,
+				setUsernameError,
+				controller.signal
+			)
+		}, 500)
+
+		return () => {
+			controller.abort()
+			clearTimeout(timeoutId)
+		}
+	}, [formValues.username.loading, formValues.username.value])
+
+	const isFormValid =
+		!formValues.name.value ||
+		!formValues.username.value ||
+		formValues.name.error ||
+		formValues.username.error ||
+		formValues.username.loading
+
+	return { ...formValues, setName, setUsername, setUsernameError, isFormValid }
 }
 
-const validateUsernameIsAvailable = async(username, setUsernameError, signal) => {
-  let error
-  try {
+const validateUsernameIsAvailable = async (
+	username,
+	setUsernameError,
+	signal
+) => {
+	const { user, error, aborted } = await findUsersByUsername(username, signal)
 
-    const res = await fetch(`http://localhost:4000/users?username=${username}`, { signal })
-    if (res.ok) {
-      const data = await res.json()
-      if (data.length){
-        error = 'Ya está en uso'
-      }
-      // OK : error = undefined
-    } else {
-      error = 'Error al validar'
-    }
-  } catch (err) {
-    if (err.name === 'AbortError') return
-    error = 'Error al validar'
-  }
-  setUsernameError(error)
+	if (aborted) return
+	if (error) return setUsernameError('Error al validar')
 
+	setUsernameError(user ? 'Ya está en uso' : undefined)
 }
