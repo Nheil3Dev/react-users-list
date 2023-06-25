@@ -1,5 +1,5 @@
-import { Select } from './forms/Select'
-import { PageSelector } from './PageSelector'
+import { PageSelector } from '../forms/PageSelector'
+import { Select } from '../forms/Select'
 import style from './UserListPagination.module.css'
 
 export const UserListPagination = ({

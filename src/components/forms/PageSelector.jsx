@@ -1,6 +1,6 @@
-import { IconButton } from './buttons/IconButton'
-import ArrowLeftIcon from './icons/ArrowLeftIcon'
-import ArrowRightIcon from './icons/ArrowRightIcon'
+import { IconButton } from '../buttons/IconButton'
+import ArrowLeftIcon from '../icons/ArrowLeftIcon'
+import ArrowRightIcon from '../icons/ArrowRightIcon'
 import style from './PageSelector.module.css'
 
 export const PageSelector = ({ page, totalPages, setPage }) => {

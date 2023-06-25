@@ -1,6 +1,6 @@
+import CheckCircleIcon from '../icons/CheckCircleIcon'
+import CrossCircleIcon from '../icons/CrossCircleIcon'
 import style from './UserStatus.module.css'
-import CheckCircleIcon from './icons/CheckCircleIcon'
-import CrossCircleIcon from './icons/CrossCircleIcon'
 
 export const UserStatus = ({ active }) => {
 	const statusStyle = active ? style.active : style.inactive
