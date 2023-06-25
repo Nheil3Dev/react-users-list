@@ -1,7 +1,7 @@
 import { UsersFormContext } from '../../lib/context/UsersFormContext'
 import { useSelectedForm } from '../../lib/hooks/useSelectedForm'
 
-export const UserFormProvider = ({ reloadUsers, resetFilters, children }) => {
+export const UserFormsProvider = ({ reloadUsers, resetFilters, children }) => {
 	const { setFiltersForm, ...restSelectedForms } = useSelectedForm()
 
 	const onSuccess = () => {

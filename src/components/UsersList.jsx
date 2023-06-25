@@ -5,7 +5,7 @@ import { UserListPagination } from './UserListPagination'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListRows } from './UsersListRows'
-import { UsersFormProvider } from './providers/UserFormsProvider'
+import { UserFormsProvider } from './providers/UserFormsProvider'
 import { UserFormContainer } from './user-forms/UserFormContainer'
 
 export const UsersList = () => {
@@ -28,7 +28,7 @@ export const UsersList = () => {
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Lista de Usuarios</h1>
-			<UsersFormProvider reloadUsers={reloadUsers} resetFilters={resetFilters}>
+			<UserFormsProvider reloadUsers={reloadUsers} resetFilters={resetFilters}>
 				<UsersListFilters {...filters} {...filterSetters} />
 
 				<UserFormContainer />
@@ -38,7 +38,7 @@ export const UsersList = () => {
 					error={usersError}
 					loading={usersLoading}
 				/>
-			</UsersFormProvider>
+			</UserFormsProvider>
 
 			{!usersError && (
 				<UserListPagination
