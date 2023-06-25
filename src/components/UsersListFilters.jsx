@@ -10,7 +10,8 @@ export const UsersListFilters = ({
 	onlyActive,
 	setOnlyActive,
 	sortBy,
-	setSortBy
+	setSortBy,
+	slot
 }) => {
 	const handleChange = event => {
 		setSearch(event.target.value)
@@ -46,6 +47,7 @@ export const UsersListFilters = ({
 					/>
 					<p>Mostrar sólo activos</p>
 				</div>
+				{slot}
 			</div>
 		</div>
 	)
