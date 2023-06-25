@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { USER_FORMS } from '../../constants/userForms'
 
-export const useForm = () => {
+export const useSelectedForm = () => {
 	const [currentForm, setCurrentForm] = useState({ form: USER_FORMS.FILTERS })
 
 	const setFiltersForm = () => setCurrentForm({ form: USER_FORMS.FILTERS })
