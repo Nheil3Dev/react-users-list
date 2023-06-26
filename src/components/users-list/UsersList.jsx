@@ -1,14 +1,18 @@
+import { useState } from 'react'
 import { useFilters } from '../../lib/hooks/useFilters'
 import { useUsers } from '../../lib/hooks/useUsers'
 import { getUsersToDisplay } from '../../lib/users/filterUsers'
 import { UserFormsProvider } from '../providers/UserFormsProvider'
 import { UserFormContainer } from '../user-forms/UserFormContainer'
-import { UserListPagination } from './UserListPagination'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
+import { UsersListPagination } from './UsersListPagination'
 import { UsersListRows } from './UsersListRows'
+import { UsersListViewSelector } from './UsersListViewSelector'
 
 export const UsersList = () => {
+	const [view, setView] = useState(true)
+
 	const {
 		filters,
 		pagination,
@@ -32,16 +36,17 @@ export const UsersList = () => {
 				<UsersListFilters {...filters} {...filterSetters} />
 
 				<UserFormContainer />
-
+				<UsersListViewSelector view={view} setView={setView} />
 				<UsersListRows
 					users={paginatedUsers}
 					error={usersError}
 					loading={usersLoading}
+					view={view}
 				/>
 			</UserFormsProvider>
 
 			{!usersError && (
-				<UserListPagination
+				<UsersListPagination
 					{...pagination}
 					{...paginationSetters}
 					totalPages={totalPages}
