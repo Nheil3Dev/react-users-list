@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useFilters } from '../../lib/hooks/useFilters'
 import { useUsers } from '../../lib/hooks/useUsers'
-import { getUsersToDisplay } from '../../lib/users/filterUsers'
 import { UserFormsProvider } from '../providers/UserFormsProvider'
 import { UserFormContainer } from '../user-forms/UserFormContainer'
 import style from './UsersList.module.css'
@@ -13,32 +12,25 @@ import { UsersListViewSelector } from './UsersListViewSelector'
 export const UsersList = () => {
 	const [view, setView] = useState(true)
 
-	const {
-		filters,
-		pagination,
-		filterSetters,
-		paginationSetters,
-		resetFilters
-	} = useFilters()
+	const { filters, filterSetters, paginationSetters, resetFilters } =
+		useFilters()
 
-	const { users, usersError, usersLoading, reloadUsers } = useUsers()
-
-	const { paginatedUsers, totalPages } = getUsersToDisplay(
-		users,
-		filters,
-		pagination
-	)
+	const { users, usersCount, usersError, usersLoading } = useUsers(filters)
 
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Lista de Usuarios</h1>
-			<UserFormsProvider reloadUsers={reloadUsers} resetFilters={resetFilters}>
-				<UsersListFilters {...filters} {...filterSetters} />
-
+			<UserFormsProvider resetFilters={resetFilters}>
+				<UsersListFilters
+					search={filters.search}
+					onlyActive={filters.onlyActive}
+					sortBy={filters.sortBy}
+					{...filterSetters}
+				/>
 				<UserFormContainer />
 				<UsersListViewSelector view={view} setView={setView} />
 				<UsersListRows
-					users={paginatedUsers}
+					users={users}
 					error={usersError}
 					loading={usersLoading}
 					view={view}
@@ -47,9 +39,10 @@ export const UsersList = () => {
 
 			{!usersError && (
 				<UsersListPagination
-					{...pagination}
+					page={filters.page}
+					itemsPerPage={filters.itemsPerPage}
 					{...paginationSetters}
-					totalPages={totalPages}
+					totalUsers={usersCount}
 				/>
 			)}
 		</div>

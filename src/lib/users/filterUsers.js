@@ -1,6 +1,9 @@
 import { SORT_OPTIONS } from '../../constants/sortOptions'
 import { USER_ROLES } from '../../constants/userRoles'
 
+// Este archivo ya no se utiliza en el proyecto, ya que esta parte la hacemos desde
+// el servidor.
+
 const filterUsersByName = (users, search) => {
 	if (!search) return [...users]
 
