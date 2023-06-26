@@ -22,8 +22,16 @@
 }
 
 .button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	border: none;
+	border-radius: var(--radius-sm);
 	outline: none;
 	background: none;
 	color: var(--color-lightgray);
+}
+
+.button:focus {
+	box-shadow: var(--shadow-sm);
 }
