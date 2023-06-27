@@ -16,22 +16,24 @@ export const getEditFormInitialState = user => ({
 })
 
 export const editFormReducer = (state, action) => {
-	switch (action.type) {
+	const { type, payload } = action
+	switch (type) {
 		case EDIT_FORM_ACTIONS.NAME: {
-			const error = validatename(action.payload)
+			const error = validatename(payload)
 
 			return {
 				...state,
-				name: { value: action.payload, error }
+				name: { value: payload, error }
 			}
 		}
 		case EDIT_FORM_ACTIONS.USERNAME: {
-			const error = validateUsername(action.payload)
-			const isInitial = action.payload === action.currentUsername
+			const { username, isInitial } = payload
+			const error = validateUsername(username)
+
 			return {
 				...state,
 				username: {
-					value: action.payload,
+					value: username,
 					loading: !error && !isInitial,
 					error
 				}
@@ -40,24 +42,24 @@ export const editFormReducer = (state, action) => {
 		case EDIT_FORM_ACTIONS.ROLE:
 			return {
 				...state,
-				role: action.payload
+				role: payload
 			}
 		case EDIT_FORM_ACTIONS.ACTIVE:
 			return {
 				...state,
-				active: action.payload
+				active: payload
 			}
 		case EDIT_FORM_ACTIONS.USERNAME_ERROR:
 			return {
 				...state,
 				username: {
 					value: state.username.value,
-					error: action.payload,
+					error: payload,
 					loading: false
 				}
 			}
 		case EDIT_FORM_ACTIONS.REPLACE:
-			return action.payload
+			return payload
 		default:
 			throw new Error('Invalid action type')
 	}

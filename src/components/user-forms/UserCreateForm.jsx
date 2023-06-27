@@ -1,6 +1,9 @@
 import { useContext, useState } from 'react'
-import { CREATE_FORM_ACTIONS } from '../../constants/createFormActions'
 import { USER_ROLES } from '../../constants/userRoles'
+import {
+	nameChanged,
+	usernameChanged
+} from '../../lib/actions/createFormActions'
 import { createUser } from '../../lib/api/usersApi'
 import { UsersFormContext } from '../../lib/context/UsersFormContext'
 import { useCreateForm } from '../../lib/hooks/useCreateForm'
@@ -29,12 +32,7 @@ export const UserCreateForm = () => {
 					placeholder='John Doe'
 					value={name.value}
 					error={name.error}
-					onChange={ev =>
-						dispatchFormValues({
-							type: CREATE_FORM_ACTIONS.NAME,
-							payload: ev.target.value
-						})
-					}
+					onChange={ev => dispatchFormValues(nameChanged(ev.target.value))}
 				/>
 				<InputTextAsync
 					className={style.input}
@@ -44,12 +42,7 @@ export const UserCreateForm = () => {
 					error={username.error}
 					loading={username.loading}
 					success={username.value && !username.loading && !username.error}
-					onChange={ev =>
-						dispatchFormValues({
-							type: CREATE_FORM_ACTIONS.USERNAME,
-							payload: ev.target.value
-						})
-					}
+					onChange={ev => dispatchFormValues(usernameChanged(ev.target.value))}
 				/>
 			</div>
 			<div className={style.row}>
