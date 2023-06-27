@@ -1,64 +1,23 @@
 import { useEffect, useReducer } from 'react'
+import { EDIT_FORM_ACTIONS } from '../../constants/editFormActions'
 import { findUsersByUsername } from '../api/usersApi'
-import { validateUsername, validatename } from '../users/userValidations'
-
-const formValuesReducer = (state, action) => {
-	switch (action.type) {
-		case 'name_changed': {
-			const error = validatename(action.payload)
-
-			return {
-				...state,
-				name: { value: action.payload, error }
-			}
-		}
-		case 'username_changed': {
-			const error = validateUsername(action.payload)
-			const isInitial = action.payload === action.currentUsername
-			return {
-				...state,
-				username: {
-					value: action.payload,
-					loading: !error && !isInitial,
-					error
-				}
-			}
-		}
-		case 'role_chaged':
-			return {
-				...state,
-				role: action.payload
-			}
-		case 'active_changed':
-			return {
-				...state,
-				active: action.payload
-			}
-		case 'username_error_changed':
-			return {
-				...state,
-				username: {
-					value: state.username.value,
-					error: action.payload,
-					loading: false
-				}
-			}
-		case 'replace':
-			return action.payload
-		default:
-			throw new Error('Invalid action type')
-	}
-}
+import {
+	editFormReducer,
+	getEditFormInitialState
+} from '../reducers/editFormReducer'
 
 export const useEditForm = user => {
 	const [formValues, dispatchFormValues] = useReducer(
-		formValuesReducer,
+		editFormReducer,
 		user,
-		getInitialState
+		getEditFormInitialState
 	)
 
 	useEffect(() => {
-		dispatchFormValues({ type: 'replace', payload: getInitialState(user) })
+		dispatchFormValues({
+			type: EDIT_FORM_ACTIONS.REPLACE,
+			payload: getEditFormInitialState(user)
+		})
 	}, [user])
 
 	useEffect(() => {
@@ -93,20 +52,6 @@ export const useEditForm = user => {
 	}
 }
 
-const getInitialState = user => ({
-	name: {
-		value: user.name,
-		error: undefined
-	},
-	username: {
-		value: user.username,
-		loading: false,
-		error: undefined
-	},
-	role: user.role,
-	active: user.active
-})
-
 const areInitialValues = (formValues, user) =>
 	formValues.name.value === user.name &&
 	formValues.username.value === user.username &&
@@ -123,12 +68,12 @@ const validateUsernameIsAvailable = async (
 	if (aborted) return
 	if (error)
 		return dispatchFormValues({
-			type: 'username_error_changed',
+			type: EDIT_FORM_ACTIONS.USERNAME_ERROR,
 			payload: 'Error al validar'
 		})
 
 	dispatchFormValues({
-		type: 'username_error_changed',
+		type: EDIT_FORM_ACTIONS.USERNAME_ERROR,
 		payload: user ? 'Ya está en uso' : undefined
 	})
 }

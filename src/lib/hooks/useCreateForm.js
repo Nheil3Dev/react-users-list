@@ -1,50 +1,16 @@
 import { useEffect, useReducer } from 'react'
+import { CREATE_FORM_ACTIONS } from '../../constants/createFormActions'
 import { findUsersByUsername } from '../api/usersApi'
-import { validateUsername, validatename } from '../users/userValidations'
-
-const formValuesReducer = (state, action) => {
-	switch (action.type) {
-		case 'name_changed': {
-			const error = validatename(action.payload)
-
-			return {
-				...state,
-				name: { value: action.payload, error }
-			}
-		}
-		case 'username_changed': {
-			const error = validateUsername(action.payload)
-			return {
-				...state,
-				username: { value: action.payload, loading: !error, error }
-			}
-		}
-		case 'username_error_changed':
-			return {
-				...state,
-				username: {
-					value: state.username.value,
-					error: action.payload,
-					loading: false
-				}
-			}
-		default:
-			throw new Error('Invalid action type')
-	}
-}
+import {
+	CREATE_FORM_INITIAL_STATE,
+	createFormReducer
+} from '../reducers/createFormReducer'
 
 export const useCreateForm = () => {
-	const [formValues, dispatchFormValues] = useReducer(formValuesReducer, {
-		name: {
-			value: '',
-			error: undefined
-		},
-		username: {
-			value: '',
-			loading: false,
-			error: undefined
-		}
-	})
+	const [formValues, dispatchFormValues] = useReducer(
+		createFormReducer,
+		CREATE_FORM_INITIAL_STATE
+	)
 
 	useEffect(() => {
 		if (!formValues.username.loading) return
@@ -89,12 +55,12 @@ const validateUsernameIsAvailable = async (
 	if (aborted) return
 	if (error)
 		return dispatchFormValues({
-			type: 'username_error_changed',
+			type: CREATE_FORM_ACTIONS.USERNAME_ERROR,
 			payload: 'Error al validar'
 		})
 
 	dispatchFormValues({
-		type: 'username_error_changed',
+		type: CREATE_FORM_ACTIONS.USERNAME_ERROR,
 		payload: user ? 'Ya está en uso' : undefined
 	})
 }
