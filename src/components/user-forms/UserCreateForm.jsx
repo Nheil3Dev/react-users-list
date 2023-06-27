@@ -12,8 +12,7 @@ import style from './UserCreateForm.module.css'
 
 export const UserCreateForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false)
-	const { name, username, setName, setUsername, isFormInvalid } =
-		useCreateForm()
+	const { name, username, dispatchFormValues, isFormInvalid } = useCreateForm()
 	const { onSuccess } = useContext(UsersFormContext)
 
 	return (
@@ -28,7 +27,12 @@ export const UserCreateForm = () => {
 					label='Nombre'
 					placeholder='John Doe'
 					value={name.value}
-					onChange={ev => setName(ev.target.value)}
+					onChange={ev =>
+						dispatchFormValues({
+							type: 'name_changed',
+							payload: ev.target.value
+						})
+					}
 					error={name.error}
 				/>
 				<InputTextAsync
@@ -36,7 +40,12 @@ export const UserCreateForm = () => {
 					label='Username'
 					placeholder='johndoe'
 					value={username.value}
-					onChange={ev => setUsername(ev.target.value)}
+					onChange={ev =>
+						dispatchFormValues({
+							type: 'username_changed',
+							payload: ev.target.value
+						})
+					}
 					error={username.error}
 					loading={username.loading}
 					success={username.value && !username.loading && !username.error}

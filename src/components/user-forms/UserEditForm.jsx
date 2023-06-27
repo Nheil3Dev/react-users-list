@@ -13,17 +13,8 @@ import style from './UserEditForm.module.css'
 export const UserEditForm = () => {
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const { currentUser, onSuccess } = useContext(UsersFormContext)
-	const {
-		name,
-		username,
-		role,
-		active,
-		setName,
-		setUsername,
-		setRole,
-		setActive,
-		isFormInvalid
-	} = useEditForm(currentUser)
+	const { name, username, role, active, dispatchFormValues, isFormInvalid } =
+		useEditForm(currentUser)
 
 	return (
 		<form
@@ -48,7 +39,12 @@ export const UserEditForm = () => {
 					label='Nombre'
 					placeholder='John Doe'
 					value={name.value}
-					onChange={ev => setName(ev.target.value)}
+					onChange={ev =>
+						dispatchFormValues({
+							type: 'name_changed',
+							payload: ev.target.value
+						})
+					}
 					error={name.error}
 				/>
 				<InputTextAsync
@@ -56,7 +52,13 @@ export const UserEditForm = () => {
 					label='Username'
 					placeholder='johndoe'
 					value={username.value}
-					onChange={ev => setUsername(ev.target.value)}
+					onChange={ev =>
+						dispatchFormValues({
+							type: 'username_changed',
+							payload: ev.target.value,
+							currentUsername: currentUser.username
+						})
+					}
 					error={username.error}
 					loading={username.loading}
 					success={
@@ -67,7 +69,15 @@ export const UserEditForm = () => {
 				/>
 			</div>
 			<div className={style.row}>
-				<Select value={role} onChange={ev => setRole(ev.target.value)}>
+				<Select
+					value={role}
+					onChange={ev =>
+						dispatchFormValues({
+							type: 'role_changed',
+							payload: ev.target.value
+						})
+					}
+				>
 					<option value={USER_ROLES.TEACHER}>Profesor</option>
 					<option value={USER_ROLES.STUDENT}>Estudiante</option>
 					<option value={USER_ROLES.OTHER}>Otro</option>
@@ -75,7 +85,12 @@ export const UserEditForm = () => {
 				<div className={style.active}>
 					<InputCheckbox
 						checked={active}
-						onChange={ev => setActive(ev.target.checked)}
+						onChange={ev =>
+							dispatchFormValues({
+								type: 'active_changed',
+								payload: ev.target.checked
+							})
+						}
 					/>
 					<span>¿Activo?</span>
 				</div>

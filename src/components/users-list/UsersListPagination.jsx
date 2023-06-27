@@ -6,8 +6,7 @@ import style from './UsersListPagination.module.css'
 export const UsersListPagination = ({
 	page,
 	itemsPerPage,
-	setPage,
-	setItemsPerPage,
+	dispatchFilters,
 	totalUsers
 }) => {
 	return (
@@ -15,7 +14,12 @@ export const UsersListPagination = ({
 			<div className={style.itemsPerPage}>
 				<Select
 					value={itemsPerPage}
-					onChange={ev => setItemsPerPage(Number(ev.target.value))}
+					onChange={ev =>
+						dispatchFilters({
+							type: 'items_per_page_changed',
+							payload: Number(ev.target.value)
+						})
+					}
 				>
 					{PAGINATION.ITEMS_PER_PAGE_VALUES.map(value => (
 						<option key={value} value={value}>
@@ -28,7 +32,9 @@ export const UsersListPagination = ({
 			<PageSelector
 				page={page}
 				totalPages={Math.ceil(totalUsers / itemsPerPage)}
-				setPage={setPage}
+				setPage={newPage =>
+					dispatchFilters({ type: 'page_changed', payload: newPage })
+				}
 			/>
 		</div>
 	)

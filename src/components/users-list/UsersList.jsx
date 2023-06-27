@@ -12,20 +12,21 @@ import { UsersListViewSelector } from './UsersListViewSelector'
 export const UsersList = () => {
 	const [showRowsFormat, setShowRowsFormat] = useState(true)
 
-	const { filters, filterSetters, paginationSetters, resetFilters } =
-		useFilters()
+	const { filters, dispatchFilters } = useFilters()
 
 	const { users, totalUsers, usersError, usersLoading } = useUsers(filters)
 
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Lista de Usuarios</h1>
-			<UserFormsProvider resetFilters={resetFilters}>
+			<UserFormsProvider
+				resetFilters={() => dispatchFilters({ type: 'reset' })}
+			>
 				<UsersListFilters
 					search={filters.search}
 					onlyActive={filters.onlyActive}
 					sortBy={filters.sortBy}
-					{...filterSetters}
+					dispatchFilters={dispatchFilters}
 				/>
 				<UserFormContainer />
 				<UsersListViewSelector
@@ -44,7 +45,7 @@ export const UsersList = () => {
 				<UsersListPagination
 					page={filters.page}
 					itemsPerPage={filters.itemsPerPage}
-					{...paginationSetters}
+					dispatchFilters={dispatchFilters}
 					totalUsers={totalUsers}
 				/>
 			)}
