@@ -34,10 +34,12 @@ export const UsersList = () => {
 					dispatchFilters={dispatchFilters}
 				/>
 				<UserFormContainer />
-				<UsersListViewSelector
-					showRowsFormat={showRowsFormat}
-					setShowRowsFormat={setShowRowsFormat}
-				/>
+				{!usersError && (
+					<UsersListViewSelector
+						showRowsFormat={showRowsFormat}
+						setShowRowsFormat={setShowRowsFormat}
+					/>
+				)}
 				<UsersListRows
 					users={users}
 					error={usersError}
