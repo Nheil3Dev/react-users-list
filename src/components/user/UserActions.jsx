@@ -3,15 +3,22 @@ import { useDropdown } from '../../lib/hooks/useDropdown'
 import { IconButton } from '../buttons/IconButton'
 import DotsIcon from '../icons/DotsIcon'
 import PencilIcon from '../icons/PencilIcon'
+import PictureIcon from '../icons/PictureIcon'
 import TrashIcon from '../icons/TrashIcon'
 import { Modal } from '../modal/Modal'
 import { UserDeleteForm } from '../user-forms/UserDeleteForm'
 import { UserEditForm } from '../user-forms/UserEditForm'
+import { UserPicForm } from '../user-forms/UserPicForm'
 import style from './UserActions.module.css'
 
 export const UserActions = ({ user }) => {
-	const { modalContent, closeModal, openEditModal, openDeleteModal } =
-		useModal(user)
+	const {
+		modalContent,
+		closeModal,
+		openEditModal,
+		openPicModal,
+		openDeleteModal
+	} = useModal(user)
 
 	const { dropdownOpened, openDropdown, closeDropdown, dropdownRef } =
 		useDropdown()
@@ -30,8 +37,8 @@ export const UserActions = ({ user }) => {
 						<PencilIcon className={style.icon} />
 						<span>Editar</span>
 					</li>
-					<li className={style.row} onClick={openEditModal}>
-						<PencilIcon className={style.icon} />
+					<li className={style.row} onClick={openPicModal}>
+						<PictureIcon className={style.icon} />
 						<span>Cambiar foto</span>
 					</li>
 					<li className={style.row} onClick={openDeleteModal}>
@@ -53,10 +60,20 @@ const useModal = user => {
 		setModalContent(<UserEditForm currentUser={user} closeModal={closeModal} />)
 	}
 
+	const openPicModal = () => {
+		setModalContent(<UserPicForm currentUser={user} closeModal={closeModal} />)
+	}
+
 	const openDeleteModal = () =>
 		setModalContent(
 			<UserDeleteForm currentUser={user} closeModal={closeModal} />
 		)
 
-	return { modalContent, closeModal, openEditModal, openDeleteModal }
+	return {
+		modalContent,
+		closeModal,
+		openEditModal,
+		openPicModal,
+		openDeleteModal
+	}
 }

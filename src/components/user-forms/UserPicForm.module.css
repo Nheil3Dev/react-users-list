@@ -1,0 +1,53 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+}
+
+.preview {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 6.25rem;
+	width: 6.25rem;
+	border-radius: 50%;
+
+	background-color: var(--color-lightgray);
+}
+
+.icon {
+	height: 2.25rem;
+	width: 2.25rem;
+	color: var(--color-gray);
+}
+
+.picture {
+	height: 100%;
+	width: 100%;
+	border-radius: 50%;
+}
+
+.filename {
+	color: var(--color-green);
+}
+
+.error {
+	color: var(--color-red);
+}
+
+.button {
+	width: 100%;
+}
+
+.input {
+	display: none;
+}
+
+.iconButton {
+	position: absolute;
+	right: -0.625rem;
+	bottom: -0.625rem;
+}
