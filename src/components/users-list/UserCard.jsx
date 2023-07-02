@@ -1,36 +1,21 @@
-import { useContext } from 'react'
-import { UsersFormContext } from '../../lib/context/UsersFormContext'
-import { IconButton } from '../buttons/IconButton'
-import PencilIcon from '../icons/PencilIcon'
-import TrashIcon from '../icons/TrashIcon'
 import { UserDisplay } from '../user/UserDisplay'
 import { UserRole } from '../user/UserRole'
 import { UserStatus } from '../user/UserStatus'
+import { UserActions } from '../user/userActions'
 import style from './UserCard.module.css'
 
-export const UserCard = ({ id, username, name, active, role }) => {
-	const { setEditForm, setDeleteForm } = useContext(UsersFormContext)
+export const UserCard = ({ user }) => {
 	return (
 		<div className={style.wrapper}>
 			<div className={style.card}>
 				<div className={style.name}>
-					<UserDisplay name={name} username={username} />
+					<UserDisplay name={user.name} username={user.username} />
 				</div>
 				<div className={style.info}>
-					<UserRole role={role} />
-					<UserStatus active={active} />
+					<UserRole role={user.role} />
+					<UserStatus active={user.active} />
 					<div className={style.actions}>
-						<IconButton
-							icon={PencilIcon}
-							onClick={() => {
-								setEditForm({ id, name, username, active, role })
-							}}
-						/>
-						<IconButton
-							kind='red'
-							icon={TrashIcon}
-							onClick={() => setDeleteForm({ id, name })}
-						/>
+						<UserActions user={user} />
 					</div>
 				</div>
 			</div>

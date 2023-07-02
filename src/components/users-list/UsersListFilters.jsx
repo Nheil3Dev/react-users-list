@@ -1,16 +1,16 @@
-import { useContext } from 'react'
+import { useState } from 'react'
 import { SORT_OPTIONS } from '../../constants/sortOptions'
-import { USER_FORMS } from '../../constants/userForms'
 import {
 	onlyActiveChanged,
 	searchChanged,
 	sortByChanged
 } from '../../lib/actions/filtersActions'
-import { UsersFormContext } from '../../lib/context/UsersFormContext'
 import { Button } from '../buttons/Button'
 import { InputCheckbox } from '../forms/InputCheckbox'
 import { InputSearch } from '../forms/InputSearch'
 import { Select } from '../forms/Select'
+import { Modal } from '../modal/Modal'
+import { UserCreateForm } from '../user-forms/UserCreateForm'
 import style from './UsersListFilters.module.css'
 
 export const UsersListFilters = ({
@@ -19,12 +19,13 @@ export const UsersListFilters = ({
 	sortBy,
 	dispatchFilters
 }) => {
-	const { currentForm, setCreateForm } = useContext(UsersFormContext)
-
-	if (currentForm !== USER_FORMS.FILTERS) return null
-
+	const [showModal, setShowModal] = useState(false)
 	return (
 		<div className={style.form}>
+			<Modal closeModal={() => setShowModal(false)}>
+				{showModal && <UserCreateForm closeModal={() => setShowModal(false)} />}
+			</Modal>
+
 			<div className={style.row}>
 				<InputSearch
 					placeholder='Buscar...'
@@ -59,7 +60,7 @@ export const UsersListFilters = ({
 					/>
 					<p>Mostrar sólo activos</p>
 				</div>
-				<Button onClick={setCreateForm}>Añadir usuario</Button>
+				<Button onClick={() => setShowModal(true)}>Añadir usuario</Button>
 			</div>
 		</div>
 	)
