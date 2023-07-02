@@ -25,3 +25,7 @@
 	top: -1rem;
 	right: -1rem;
 }
+
+.bodyOverflow {
+	overflow-y: hidden;
+}
