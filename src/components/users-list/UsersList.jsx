@@ -6,6 +6,7 @@ import {
 	FILTERS_INITIAL_STATE,
 	filtersReducers
 } from '../../lib/reducers/filtersReducers'
+import { AlertBox } from '../alerts/AlertBox'
 import style from './UsersList.module.css'
 import { UsersListFilters } from './UsersListFilters'
 import { UsersListPagination } from './UsersListPagination'
@@ -25,6 +26,7 @@ export const UsersList = () => {
 	return (
 		<div className={style.list}>
 			<h1 className={style.title}>Lista de Usuarios</h1>
+			<AlertBox />
 			<UsersFormContext.Provider
 				value={{ onSuccess: () => dispatchFilters(reset()) }}
 			>
